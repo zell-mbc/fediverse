@@ -1,1 +1,2 @@
-Joomla! extensions to integrate Mastodon with your site
+Joomla! extensions to integrate the Fediverse with your site
+
