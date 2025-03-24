@@ -70,12 +70,10 @@ class TootStreamLoader
 	 *
 	 * @since   1.0.0
 	 * @see     https://docs.joinmastodon.org/entities/status/
-	 * TZ: Changed userId to string, because that's what Akkoma/Pleroma use
+	 * TZ: Changed userId to string to support non Mastodon backends like Akkoma/Pleroma
 	 */
 	public function getStream(string $server, string $userId): ?array
 	{
-		//echo "$server";
-		//echo "$userId";
 
 		if (!$this->useCaching)
 		{
@@ -116,7 +114,7 @@ class TootStreamLoader
 	 *
 	 * @since   1.0.0
 	 * @see     https://docs.joinmastodon.org/entities/status/
-	 * TZ: Changed userId to string, because that's what Akkoma/Pleroma use
+	 * TZ: Changed userId to string to support non Mastodon backends like Akkoma/Pleroma
 	 */
 	private function loadStream(string $server, string $userId): array
 	{

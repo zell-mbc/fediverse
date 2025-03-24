@@ -5,6 +5,18 @@ release. I managed to create v2.0.2 which I sucessfully installed on the latest
 Joomla 4 release. But I am completely out of my depths as to how to bring this
 code to Joomla 5. Any help would be really aprecchiated!
 
+## State of play:
+
+** What works: **
+- Mastodon Feed: Now works on J5
+- Mastodon Feed: Added support for Akkoma/Pleroma and potentially other backends with non numeric user id's 
+
+** What's known to be broken: **
+- Publish articles to Fediverse
+
+
+------------------
+
 Original notes from Nicholas:
 
 # Fediverse Tools for Joomla! (ARCHIVED)
