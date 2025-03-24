@@ -56,7 +56,7 @@ class TootStreamLoader
 		}
 
 		[, $server] = explode('@', $username, 2);
-
+		//echo $accountInfo;
 		return $this->getStream($server, $accountInfo->id);
 	}
 
@@ -70,9 +70,13 @@ class TootStreamLoader
 	 *
 	 * @since   1.0.0
 	 * @see     https://docs.joinmastodon.org/entities/status/
+	 * TZ: Changed userId to string, because that's what Akkoma/Pleroma use
 	 */
-	public function getStream(string $server, int $userId): ?array
+	public function getStream(string $server, string $userId): ?array
 	{
+		//echo "$server";
+		//echo "$userId";
+
 		if (!$this->useCaching)
 		{
 			try
@@ -86,19 +90,19 @@ class TootStreamLoader
 		}
 
 		return $this->getCache()
-		            ->get(
-			            function ($server, $userId) {
-				            try
-				            {
-					            return $this->loadStream($server, $userId);
-				            }
-				            catch (\Exception $e)
-				            {
-					            return null;
-				            }
-			            },
-			            [$server, $userId]
-		            );
+		->get(
+			function ($server, $userId) {
+				try
+				{
+					return $this->loadStream($server, $userId);
+				}
+				catch (\Exception $e)
+				{
+					return null;
+				}
+			},
+		[$server, $userId]
+		);
 	}
 
 	/**
@@ -112,10 +116,11 @@ class TootStreamLoader
 	 *
 	 * @since   1.0.0
 	 * @see     https://docs.joinmastodon.org/entities/status/
+	 * TZ: Changed userId to string, because that's what Akkoma/Pleroma use
 	 */
-	private function loadStream(string $server, int $userId): array
+	private function loadStream(string $server, string $userId): array
 	{
-		$apiUrl   = sprintf("https://%s/api/v1/accounts/%d/statuses?limit=%u", $server, $userId, $this->maxToots);
+		$apiUrl   = sprintf("https://%s/api/v1/accounts/%s/statuses?limit=%u", $server, $userId, $this->maxToots);
 		$response = $this->http->get($apiUrl, [], $this->requestTimeout);
 
 		if ($response->getStatusCode() !== 200)
@@ -123,20 +128,20 @@ class TootStreamLoader
 			throw new RuntimeException(
 				sprintf(
 					'Mastodon server returned HTTP status %d',
-					$response->getStatusCode()
+			$response->getStatusCode()
 				)
 			);
 		}
 
 		if (!str_starts_with(
 			$contentType = implode('', $response->getHeader('content-type')),
-			'application/json'
+							 'application/json'
 		))
 		{
 			throw new RuntimeException(
 				sprintf(
 					'Invalid content type %s in Mastodon server response',
-					$contentType
+			$contentType
 				)
 			);
 		}
